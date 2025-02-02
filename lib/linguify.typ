@@ -66,14 +66,25 @@
 /// -> dictionary with ("ok":value) if value was found and ("error": error_message) if value was not found
 
 #let _linguify(key, from: auto, lang: auto, args: auto) = {
-  let database = if-auto-then(from,database.get())
+  let database = database
+  if from != auto {
+    database = from
+  } else {
+    database = if-auto-then(from, database.get())
+  }
 
   // check if database is not empty. Means no data dictionary was specified.
   if (database == none) { return error("linguify database is empty.") }
   let data_type = database.conf.at("data_type", default: "dict")
 
   // get selected language.
-  let selected_lang = if-auto-then(lang, text.lang)
+  let selected_lang
+  if lang != auto {
+    selected_lang = lang
+  } else {
+    selected_lang = if-auto-then(lang, text.lang)
+  }
+
   let lang_not_found = not selected_lang in database.lang
   let fallback_lang = database.conf.at("default-lang", default: none)
 
@@ -132,12 +143,32 @@
 /// - default (any): A default value to return if the key is not part of the database.
 /// -> content
 #let linguify(key, from: auto, lang: auto, default: auto, args: auto) = {
-  context {
+  if from == auto {
+    context {
+      let result = _linguify(key, from: from, lang: lang, args: args)
+      if is-ok(result) {
+        result.ok
+      } else {
+        if-auto-then(default, panic(result.error))
+      }
+    }
+  }
+  else {
+    if (from == none) {
+      return panic("Database is required when not using context.")
+    }
+
+    if (lang == auto){
+      return panic("Language is required when not using context")
+    }
+
     let result = _linguify(key, from: from, lang: lang, args: args)
+    
     if is-ok(result) {
-      result.ok
+      str(result.ok)
     } else {
       if-auto-then(default, panic(result.error))
     }
   }
+  
 }
