@@ -22,7 +22,7 @@ Example:
 #linguify("abstract")  // Shows "Zusammenfassung" in the document.
 ```
 
-The `lang.toml` musst look like this:
+The `lang.toml` must look like this:
 
 ```toml
 [conf]
