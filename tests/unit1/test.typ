@@ -1,4 +1,4 @@
-#import "../src/linguify.typ": *
+#import "/src/linguify.typ": *
 
 #let db = toml("lang.toml")
 
