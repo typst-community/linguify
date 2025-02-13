@@ -5,4 +5,3 @@ heading = {$headingCount ->
     [one] {$headingCount} heading
    *[other] {$headingCount} headings
 }
-

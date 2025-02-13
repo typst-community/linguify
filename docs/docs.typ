@@ -19,19 +19,19 @@
 
 #let lang_data = read("lang.toml")
 
-#set-database(toml("lang.toml")) 
+#set-database(toml("lang.toml"))
 
 #let pkginfo = toml("../typst.toml").package
 
-// title 
+// title
 #align(center, text(24pt, weight: 500)[linguify manual])
 
 #abstract[
-	#link("https://github.com/jomaway/typst-linguify")[*linguify*] is a package for loading strings for different languages easily.
+  #link("https://github.com/jomaway/typst-linguify")[*linguify*] is a package for loading strings for different languages easily.
 
-	Version: #pkginfo.version \
-	Authors: #link("https://github.com/jomaway","jomaway") + community contributions \
-	License: #pkginfo.license
+  Version: #pkginfo.version \
+  Authors: #link("https://github.com/jomaway","jomaway") + community contributions \
+  License: #pkginfo.license
 ]
 
 #outline(depth: 2, indent: 2em)
@@ -48,30 +48,30 @@ This manual shows a short example for the usage of the `linguify` package inside
 *Load language data file:*  #sym.arrow See #ref(<db>, supplement: "database section") for content of `lang.toml`
 
 ```typc
-#set-database(toml("lang.toml")) 
+#set-database(toml("lang.toml"))
 ```
 
 *Example input:* \
 ```typc
 #set text(lang: "LANG")
 #smallcaps(linguify("abstract"))
-=== #linguify("title") 
+=== #linguify("title")
 
-Test: #linguify("test") 
+Test: #linguify("test")
 ```
 #v(1em)
 
 #let example(lang, info: none) = (lang,[
   #set text(lang: lang)
   #smallcaps(linguify("abstract"))
-  === #linguify("title") 
+  === #linguify("title")
   // #lorem(10)
-  
-  Test: #linguify("test") 
+
+  Test: #linguify("test")
 
   #if (info != none ) [
     #set text(style: "italic", fill: blue)
-    *Info*: #info 
+    *Info*: #info
   ]
 ])
 
@@ -96,18 +96,18 @@ The content of the `lang.toml` file, used in the example above looks like this.
 
 == Information for package authors.<4pck>
 
-As the database is stored in a typst state, it can be overwritten. This leads to the following problem. If you use #l inside your package and use the `set_database()` function it will probably work like you expect. But if a user imports your package and uses #l for their own document as well, he will overwrite the your database by using `set_database`. Therefore it is recommend to use the `from` argument in the `linguify` function to specify your database directly. 
+As the database is stored in a typst state, it can be overwritten. This leads to the following problem. If you use #l inside your package and use the `set_database()` function it will probably work like you expect. But if a user imports your package and uses #l for their own document as well, he will overwrite the your database by using `set_database`. Therefore it is recommend to use the `from` argument in the `linguify` function to specify your database directly.
 
 Example:
 ```typc
 // Load data
 #let lang_data = toml("lang.toml")
 
-// Useage 
+// Useage
 #linguify("key", from: lang_data)
 ```
 
-This makes sure the end user still can use the global database provided by #l with `set_database()` and calling. 
+This makes sure the end user still can use the global database provided by #l with `set_database()` and calling.
 
 #sym.arrow Have a look at the #link("https://github.com/jomaway/typst-gentle-clues", "gentle-clues") package for a real live example.
 
@@ -147,7 +147,7 @@ Heres a simple example of how to use the `linguify` package to load translations
   ],[
     Folder structure
     ```
-    my-project 
+    my-project
     ├── L10n
     │   ├── en.ftl
     │   └── zh.ftl
@@ -218,8 +218,8 @@ If you would like to integrate a new i18n solution into #l, you can set the `con
 
 #import "@preview/tidy:0.2.0"
 #let docs = tidy.parse-module(read("../lib/linguify.typ"), name: "Linguify reference")
-#tidy.show-module(docs, 
+#tidy.show-module(docs,
   style: tidy.styles.default,
   show-outline: false,
-	sort-functions: none,
+  sort-functions: none,
 )

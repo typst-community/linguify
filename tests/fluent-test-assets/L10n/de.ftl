@@ -6,4 +6,3 @@ heading = {$headingCount ->
     [one] eine Überschrift
    *[other] {$headingCount} Überschriften
 }
-

@@ -16,7 +16,7 @@
 #box(fill: luma(240), radius: 5pt, inset: 0.8em)[#data]
 
 = Greetings
-- #linguify("hello", from: data)  
+- #linguify("hello", from: data)
 - #linguify("hello", from: data, args:(name: "Pete"))
 
 
@@ -45,4 +45,3 @@ Your document has #context linguify("heading", from: data, args:(headingCount: c
   #set text(lang: "de")
   #de Dein Dokument hat #context linguify("heading", from: data, args:(headingCount: counter(heading).get().first())).
 ]
-
