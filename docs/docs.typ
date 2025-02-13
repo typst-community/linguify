@@ -217,7 +217,7 @@ If you would like to integrate a new i18n solution into #l, you can set the `con
 = Reference
 
 #import "@preview/tidy:0.2.0"
-#let docs = tidy.parse-module(read("../lib/linguify.typ"), name: "Linguify reference")
+#let docs = tidy.parse-module(read("../src/linguify.typ"), name: "Linguify reference")
 #tidy.show-module(docs,
   style: tidy.styles.default,
   show-outline: false,

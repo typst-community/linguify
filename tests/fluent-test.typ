@@ -1,5 +1,5 @@
 // #include "fluent-test/test.typ"
-#import "../lib/linguify.typ": *
+#import "../src/linguify.typ": *
 
 #let de = smallcaps("DE:")
 #let en = smallcaps("EN:")
