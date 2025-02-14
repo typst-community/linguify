@@ -24,7 +24,7 @@
   /// -> dictionary
   data,
 ) = {
-  assert.eq(type(data), dictionary, message: "expected data to be a dictionary, found " + type(data))
+  assert.eq(type(data), dictionary, message: "expected data to be a dictionary, found " + str(type(data)))
   if (data.at("conf", default: none) == none) {
     data.insert("conf", (:))
   }
@@ -60,7 +60,7 @@
   mode: "dict",
   args: none,
 ) = {
-  assert.eq(type(src), dictionary, message: "expected src to be a dictionary, found " + type(src))
+  assert.eq(type(src), dictionary, message: "expected src to be a dictionary, found " + str(type(src)))
   let lang_section = src.at(lang, default: none)
   if (lang_section != none) {
     if mode == "dict" {
