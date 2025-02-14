@@ -1,10 +1,10 @@
-// Helper function. 
+// Helper function.
 // if the value is auto "ret" is returned else the value self is returned
 #let if-auto-then(val,ret) = {
   if (val == auto){
     ret
-  } else { 
-    val 
+  } else {
+    val
   }
 }
 

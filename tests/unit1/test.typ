@@ -1,4 +1,4 @@
-#import "../lib/linguify.typ": *
+#import "/src/linguify.typ": *
 
 #let db = toml("lang.toml")
 
@@ -61,7 +61,7 @@
   context {
     assert(_linguify("apple", from: db) == ok("Apfel"))
     assert(_linguify("pear", from: db) == ok("Birne"))
-    assert(_linguify("banana", from: db) == ok("Banane")) 
+    assert(_linguify("banana", from: db) == ok("Banane"))
 
     // keys not inside db - will fallback to en
     assert(_linguify("red", from: db) == ok("red"))
@@ -76,7 +76,7 @@
   context {
     assert(_linguify("apple", from: db) == ok("Apple"))
     assert(_linguify("pear", from: db) == ok("Pear"))
-    assert(_linguify("banana", from: db) == ok("Banana")) 
+    assert(_linguify("banana", from: db) == ok("Banana"))
 
     assert(_linguify("red", from: db) == ok("red"))
     assert(_linguify("green", from: db) == ok("green"))

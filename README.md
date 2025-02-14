@@ -1,6 +1,6 @@
 # Typst-linguify
 
-Load strings for different languages easily. This can be useful if you create a package or template for multilingual usage. 
+Load strings for different languages easily. This can be useful if you create a package or template for multilingual usage.
 
 ## Usage
 
@@ -43,7 +43,7 @@ So that multiple packages can use linguify simultaneously, they should contain t
 
 Recommend is to store the database in a separate file like `lang.toml` and load it inside the document. And specify it in each `linguify()` function call.
 
-Example: 
+Example:
 ```typ
 #import "@preview/linguify:0.4.1": *
 
@@ -57,4 +57,4 @@ Example:
 - Use a `toml` or other file to load strings for different languages. You need to pass a typst dictionary which follows the structure of the shown toml file.
 - Specify a **default-lang**. If none is specified it will default to `en`
 - **Fallback** to the default-lang if a key is not found for a certain language.
-- [Fluent](https://projectfluent.org) support 
+- [Fluent](https://projectfluent.org) support

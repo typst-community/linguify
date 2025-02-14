@@ -90,11 +90,11 @@
   }
 
   let value = get_text(database.lang, key, selected_lang, mode: data_type, args: args)
-  
+
   if (value != none) {
     return ok(value)
   }
-  
+
   let error_message = if lang_not_found {
     "Could not find language `" + selected_lang + "` in the linguify database."
   } else {
@@ -111,7 +111,7 @@
     }
 
     // if the key is not found in the fallback language
-    
+
     error_message = error_message + " Also, the fallback language `" + fallback_lang + "` does not contain the key `" + key + "`."
 
   } else {
