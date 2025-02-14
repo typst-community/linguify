@@ -1,0 +1,13 @@
+[workspace]
+resolver = "2"
+
+members = [
+	"linguify_fluent_rs",
+]
+
+[profile.release]
+lto = true          # Enable link-time optimization
+strip = true        # Strip symbols from binary*
+opt-level = 'z'     # Optimize for size
+codegen-units = 1   # Reduce number of codegen units to increase optimizations
+panic = 'abort'     # Abort on panic

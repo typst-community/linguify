@@ -16,5 +16,8 @@ docs/*
 !docs/*.pdf
 
 # ignore plugin-related files
-src/linguify_fluent_rs/*
-!src/linguify_fluent_rs/linguify_fluent_rs.wasm
+.cargo
+linguify_fluent_rs
+target
+Cargo.lock
+Cargo.toml
