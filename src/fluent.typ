@@ -6,12 +6,21 @@
 }
 
 /// Returns the message from the ftl file
-/// - `ftl_str` (str): the content of the ftl file
-/// - `msg_id` (str): the identifier of the message
-/// - `args` (dict): the arguments to pass to the message
-/// - `default` (str): the default value to return if the message is not found
 ///
-#let get_message(ftl_str, msg_id, args: none, default: none) = {
+#let get_message(
+  /// the content of the ftl file
+  /// -> string
+  ftl_str,
+  /// the identifier of the message
+  /// -> string
+  msg_id,
+  /// the arguments to pass to the message
+  /// -> dictionary
+  args: none,
+  /// the default value to return if the message is not found
+  /// -> string
+  default: none,
+) = {
   if args == none {
     args = (:)
   }
@@ -24,8 +33,6 @@
 }
 
 /// Constructs the data dict needed in `linguify.typ`
-/// - `path` (str): the path to the directory containing the ftl files
-/// - `languages` (array): the list of languages to load
 ///
 /// Returns a `str`, use `eval` to convert it to a dict
 ///
@@ -34,7 +41,11 @@
 /// eval(load_ftl_data("path/to/ftl", ("en", "fr")))
 /// ```
 #let load_ftl_data(
+  /// the path to the directory containing the ftl files
+  /// -> string
   path,
+  /// the list of languages to load
+  /// -> array
   languages
 ) = {
   assert.eq(type(path), str, message: "expected path to be a string, found " + type(path))
