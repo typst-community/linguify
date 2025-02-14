@@ -20,6 +20,11 @@ test *args:
 update *args:
   tt update {{ args }}
 
+# build the parser WASM plugin
+plugin:
+	cargo build --release --target wasm32-unknown-unknown
+	cp target/wasm32-unknown-unknown/release/linguify_fluent_rs.wasm src/
+
 # package the library into the specified destination folder
 package target:
   ./scripts/package "{{target}}"

@@ -3,11 +3,6 @@ name = "wasm-minimal-protocol"
 version = "0.1.0"
 edition = "2021"
 
-[workspace]
-resolver = "2"
-members = [".", "./wasi-stub"]
-default-members = [".", "./wasi-stub"]
-
 [lib]
 proc-macro = true
 

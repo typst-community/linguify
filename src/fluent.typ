@@ -1,4 +1,4 @@
-#let ftl = plugin("./linguify_fluent_rs/linguify_fluent_rs.wasm")
+#let ftl = plugin("./linguify_fluent_rs.wasm")
 
 /// returns a bool
 #let has_message(ftl_str, msg_id) = {
