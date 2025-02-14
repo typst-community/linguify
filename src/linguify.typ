@@ -18,9 +18,12 @@
 ///
 /// The data must contain at least a lang section like described at @@database.
 ///
-/// - data (dictionary): the database which will be set to @@database
 /// -> content (state-update)
-#let set-database(data) = {
+#let set-database(
+  /// the database which will be set to @@database
+  /// -> dictionary
+  data,
+) = {
   assert.eq(type(data), dictionary, message: "expected data to be a dictionary, found " + type(data))
   if (data.at("conf", default: none) == none) {
     data.insert("conf", (:))
@@ -32,18 +35,31 @@
 }
 
 /// Clear current database
+///
+/// -> content (state-update)
 #let reset-database() = {
   database.update(none)
 }
 
 
 /// Get a value from a L10n data dictionary.
-/// - src (dict): The dictionary to get the value from.
-/// - key (str): The key to get the value for.
-/// - lang (str): The language to get the value for.
-/// - mode (str): The data structure of src
+///
 /// -> The value for the key in the dictionary. If the key does not exist, `none` is returned.
-#let get_text(src, key, lang, mode: "dict", args: none) = {
+#let get_text(
+  /// The dictionary to get the value from.
+  /// -> dictionary
+  src,
+  /// The key to get the value for.
+  /// -> string
+  key,
+  /// The language to get the value for.
+  /// -> string
+  lang,
+  /// The data structure of src
+  /// -> string
+  mode: "dict",
+  args: none,
+) = {
   assert.eq(type(src), dictionary, message: "expected src to be a dictionary, found " + type(src))
   let lang_section = src.at(lang, default: none)
   if (lang_section != none) {
@@ -60,12 +76,20 @@
 
 /// fetch a string in the required lang.
 ///
-/// - key (string): The key at which to retrieve the item.
-/// - from (dictionary): database to fetch the item from.
-/// - lang (string): the language to look for, if auto use `context text.lang` (default)
 /// -> dictionary with ("ok":value) if value was found and ("error": error_message) if value was not found
 
-#let _linguify(key, from: auto, lang: auto, args: auto) = {
+#let _linguify(
+  /// The key at which to retrieve the item.
+  /// -> string
+  key,
+  /// database to fetch the item from.
+  /// -> dictionary
+  from: auto,
+  /// the language to look for, if auto use `context text.lang` (default)
+  /// -> string
+  lang: auto,
+  args: auto,
+) = {
   let database = if-auto-then(from,database.get())
 
   // check if database is not empty. Means no data dictionary was specified.
@@ -126,12 +150,22 @@
 /// fetch a string in the required language.
 /// provides context for `_linguify` function which implements the logic part.
 ///
-/// - key (string): The key at which to retrieve the item.
-/// - from (dictionary): database to fetch the item from. If auto linguify's global database will used.
-/// - lang (string): the language to look for, if auto use `context text.lang` (default)
-/// - default (any): A default value to return if the key is not part of the database.
 /// -> content
-#let linguify(key, from: auto, lang: auto, default: auto, args: auto) = {
+#let linguify(
+  /// The key at which to retrieve the item.
+  /// -> string
+  key,
+  /// database to fetch the item from. If auto linguify's global database will used.
+  /// -> dictionary
+  from: auto,
+  /// the language to look for, if auto use `context text.lang` (default)
+  /// -> string
+  lang: auto,
+  /// A default value to return if the key is not part of the database.
+  /// -> any
+  default: auto,
+  args: auto,
+) = {
   context {
     let result = _linguify(key, from: from, lang: lang, args: args)
     if is-ok(result) {

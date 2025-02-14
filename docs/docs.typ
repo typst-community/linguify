@@ -1,10 +1,9 @@
-#import "@preview/linguify:0.4.0": *
+#import "/src/lib.typ": *
 #import "@preview/gentle-clues:0.7.1": abstract, quote as _quote
 
 
 #let l = [_linguify_]
 
-#set text(font: "Rubik", weight: 300)
 #set heading(numbering: (..args) => {})  //needed for ref to work
 
 #show raw.where(block: false): it => {
@@ -21,7 +20,7 @@
 
 #set-database(toml("lang.toml"))
 
-#let pkginfo = toml("../typst.toml").package
+#let pkginfo = toml("/typst.toml").package
 
 // title
 #align(center, text(24pt, weight: 500)[linguify manual])
@@ -91,7 +90,7 @@ Test: #linguify("test")
 
 === Database<db>
 The content of the `lang.toml` file, used in the example above looks like this.
-#raw(read("lang.toml"))
+#raw(lang: "toml", read("lang.toml"))
 
 
 == Information for package authors.<4pck>
@@ -216,9 +215,9 @@ If you would like to integrate a new i18n solution into #l, you can set the `con
 #pagebreak()
 = Reference
 
-#import "@preview/tidy:0.2.0"
-#let docs = tidy.parse-module(read("../src/linguify.typ"), name: "Linguify reference")
-#tidy.show-module(docs,
+#import "@preview/tidy:0.4.1"
+#tidy.show-module(
+  tidy.parse-module(read("/src/linguify.typ"), name: "Linguify reference"),
   style: tidy.styles.default,
   show-outline: false,
   sort-functions: none,
