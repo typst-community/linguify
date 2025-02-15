@@ -150,6 +150,11 @@
   [run `test_args_in_dict_mode` successfully]
 }
 
+#let test_linguify_default = {
+  assert.eq(linguify("test", from: db, lang: "en", default: "x"), "x")
+
+  [run `test_linguify_default` successfully]
+}
 
 = Run tests (#datetime.today().display())
 
