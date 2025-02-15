@@ -14,24 +14,24 @@
 
 #let test_get_text = {
   // English (en)
-  assert(get_text(db.lang, "apple","en") == "Apple")
-  assert(get_text(db.lang, "pear","en") == "Pear")
-  assert(get_text(db.lang, "banana","en") == "Banana")
+  assert(get_text(db.lang, "apple", "en") == "Apple")
+  assert(get_text(db.lang, "pear", "en") == "Pear")
+  assert(get_text(db.lang, "banana", "en") == "Banana")
 
-  assert(get_text(db.lang, "red","en") == "red")
-  assert(get_text(db.lang, "green","en") == "green")
-  assert(get_text(db.lang, "yellow","en") == "yellow")
+  assert(get_text(db.lang, "red", "en") == "red")
+  assert(get_text(db.lang, "green", "en") == "green")
+  assert(get_text(db.lang, "yellow", "en") == "yellow")
 
   assert(get_text(db.lang, "test", "en") == none)
 
   // German (de)
-  assert(get_text(db.lang, "apple","de") == "Apfel")
-  assert(get_text(db.lang, "pear","de") == "Birne")
-  assert(get_text(db.lang, "banana","de") == "Banane")
+  assert(get_text(db.lang, "apple", "de") == "Apfel")
+  assert(get_text(db.lang, "pear", "de") == "Birne")
+  assert(get_text(db.lang, "banana", "de") == "Banane")
 
-  assert(get_text(db.lang, "red","de") == none)
-  assert(get_text(db.lang, "green","de") == none)
-  assert(get_text(db.lang, "yellow","de") == none)
+  assert(get_text(db.lang, "red", "de") == none)
+  assert(get_text(db.lang, "green", "de") == none)
+  assert(get_text(db.lang, "yellow", "de") == none)
 
   assert(get_text(db.lang, "test", "de") == none)
 
@@ -49,11 +49,11 @@
     assert(_linguify("pear", from: db)== ok("Pear"))
     assert(_linguify("banana", from: db) == ok("Banana" ))
 
-    assert(_linguify("red", from: db) == ("ok":"red"))
+    assert(_linguify("red", from: db) == ok("red"))
     assert(_linguify("green", from: db) == ok("green"))
     assert(_linguify("yellow", from: db) == ok("yellow"))
 
-    assert(_linguify("test", from: db).error != none)
+    assert(is-error(_linguify("test", from: db)))
    }
 
   // German (de)
@@ -68,7 +68,7 @@
     assert(_linguify("green", from: db) == ok("green"))
     assert(_linguify("yellow", from: db) == ok("yellow"))
 
-    assert(_linguify("test", from: db).error != none)
+    assert(is-error(_linguify("test", from: db)))
   }
 
   // Spanish (es) ! lang not inside db wil fallback to en
@@ -82,7 +82,7 @@
     assert(_linguify("green", from: db) == ok("green"))
     assert(_linguify("yellow", from: db) == ok("yellow"))
 
-    assert(_linguify("test", from: db).error != none)
+    assert(is-error(_linguify("test", from: db)))
   }
 
   [run `test__linguify` successfully]
@@ -102,7 +102,7 @@
     assert(_linguify("green") == ok("green"))
     assert(_linguify("yellow") == ok("yellow"))
 
-    assert(_linguify("test").error != none)
+    assert(is-error(_linguify("test")))
    }
 
   // German (de)
@@ -117,7 +117,7 @@
     assert(_linguify("green") == ok("green"))
     assert(_linguify("yellow") == ok("yellow"))
 
-    assert(_linguify("test").error != none)
+    assert(is-error(_linguify("test")))
   }
 
   // Spanish (es) ! lang not inside db wil fallback to en
@@ -131,7 +131,7 @@
     assert(_linguify("green") == ok("green"))
     assert(_linguify("yellow") == ok("yellow"))
 
-    assert(_linguify("test").error != none)
+    assert(is-error(_linguify("test")))
   }
 
   [run `test__linguify_auto_db` successfully]
@@ -140,11 +140,11 @@
 #let test_args_in_dict_mode = {
   context {
     assert(_linguify("apple") ==  ok("Apple"))
-    assert(_linguify("apple", args:(name:"test")).error != none)
-    assert(_linguify("apple", args:none).error != none)
-    assert(_linguify("apple", args:(:)).error != none)
-    assert(_linguify("apple", args:"").error != none)
-    assert(_linguify("apple", args:1).error != none)
+    assert(is-error(_linguify("apple", args: (name: "test"))))
+    assert(is-error(_linguify("apple", args: none)))
+    assert(is-error(_linguify("apple", args: (:))))
+    assert(is-error(_linguify("apple", args: "")))
+    assert(is-error(_linguify("apple", args: 1)))
   }
 
   [run `test_args_in_dict_mode` successfully]

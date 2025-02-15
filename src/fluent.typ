@@ -28,7 +28,11 @@
     return default
   }
   return str(
-    ftl.get_message(bytes(ftl_str), bytes(msg_id), bytes(json.encode(args, pretty: false)))
+    ftl.get_message(
+      bytes(ftl_str),
+      bytes(msg_id),
+      bytes(json.encode(args, pretty: false)),
+    ),
   )
 }
 
@@ -46,10 +50,10 @@
   path,
   /// the list of languages to load
   /// -> array
-  languages
+  languages,
 ) = {
-  assert.eq(type(path), str, message: "expected path to be a string, found " + type(path))
-  assert.eq(type(languages), array, message: "expected languages to be an array, found " + type(languages))
+  assert.eq(type(path), str, message: "expected path to be a string, found " + str(type(path)))
+  assert.eq(type(languages), array, message: "expected languages to be an array, found " + str(type(languages)))
 
   ```Typst
   let import_ftl(path, langs) = {
@@ -69,7 +73,7 @@
   }
   import_ftl(
     "```.text + path + ```",
-    (```.text + (languages.map((x) => {"\"" + str(x) + "\", "}).sum()).trim(" ") + ```)
+    (```.text + (languages.map(x => "\"" + str(x) + "\", ").sum()).trim(" ") + ```)
   )
   ```.text
 }

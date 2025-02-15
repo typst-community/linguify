@@ -90,7 +90,7 @@ pub fn has_id(fluent_str: &[u8], msg_id: &[u8]) -> Result<Vec<u8>, String> {
     };
     let has = res.entries().any(|entry: &Entry<&str>| {
         if let Entry::Message(msg) = entry {
-            msg.id.name.to_string() == msg_id
+            msg.id.name == msg_id
         } else {
             false
         }

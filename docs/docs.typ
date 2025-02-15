@@ -1,20 +1,18 @@
 #import "/src/lib.typ": *
 #import "@preview/gentle-clues:0.7.1": abstract, quote as _quote
 
-
 #let l = [_linguify_]
 
-#set heading(numbering: (..args) => {})  //needed for ref to work
+#set heading(numbering: (..args) => none)  // needed for ref to work
 
 #show raw.where(block: false): it => {
-  box(fill: luma(240), radius: 5pt, inset: (x: 3pt), outset: (y:3pt), it)
+  box(fill: luma(240), radius: 5pt, inset: (x: 3pt), outset: (y: 3pt), it)
 }
 #show link: set text(fill: blue)
 #show quote.where(block: false): it => {
   ["] + h(0pt, weak: true) + it.body + h(0pt, weak: true) + ["]
   if it.attribution != none [ (#it.attribution)]
 }
-
 
 #let lang_data = read("lang.toml")
 
@@ -29,7 +27,7 @@
   #link("https://github.com/jomaway/typst-linguify")[*linguify*] is a package for loading strings for different languages easily.
 
   Version: #pkginfo.version \
-  Authors: #link("https://github.com/jomaway","jomaway") + community contributions \
+  Authors: #link("https://github.com/jomaway")[jomaway] + community contributions \
   License: #pkginfo.license
 ]
 
@@ -44,7 +42,7 @@ This manual shows a short example for the usage of the `linguify` package inside
 
 == Basic Example
 
-*Load language data file:*  #sym.arrow See #ref(<db>, supplement: "database section") for content of `lang.toml`
+*Load language data file:* #sym.arrow See #ref(<db>, supplement: "database section") for content of `lang.toml`
 
 ```typc
 #set-database(toml("lang.toml"))
@@ -60,7 +58,7 @@ Test: #linguify("test")
 ```
 #v(1em)
 
-#let example(lang, info: none) = (lang,[
+#let example(lang, info: none) = (lang, [
   #set text(lang: lang)
   #smallcaps(linguify("abstract"))
   === #linguify("title")
@@ -68,7 +66,7 @@ Test: #linguify("test")
 
   Test: #linguify("test")
 
-  #if (info != none ) [
+  #if info != none [
     #set text(style: "italic", fill: blue)
     *Info*: #info
   ]
@@ -78,20 +76,22 @@ Test: #linguify("test")
   columns: 2,
   inset: 1em,
   align: (center, start),
-  table.header([*Lang*],[*Output*]),
+  table.header([*Lang*], [*Output*]),
   ..example("en"),
   ..example("de"),
-  ..example("es", info: [The key "test" is missing in the "es" language section, but as we specified a default-lang in the `conf` it will display the entry inside the specified language section, which is "en" in our case. \
-  To *disable* this behavior delete the `default-lang` entry from the `lang.toml`.]),
-  ..example("cz",info: [As the lang data does not contain a section for "cz" this entire output will fallback to the default-lang. \
-  To *disable* this behavior delete the `default-lang` entry from the `lang.toml`. ]),
-
+  ..example("es", info: [
+    The key "test" is missing in the "es" language section, but as we specified a default-lang in the `conf` it will display the entry inside the specified language section, which is "en" in our case. \
+    To *disable* this behavior delete the `default-lang` entry from the `lang.toml`.
+  ]),
+  ..example("cz", info: [
+    As the lang data does not contain a section for "cz" this entire output will fallback to the default-lang. \
+    To *disable* this behavior delete the `default-lang` entry from the `lang.toml`.
+  ]),
 )
 
 === Database<db>
 The content of the `lang.toml` file, used in the example above looks like this.
 #raw(lang: "toml", read("lang.toml"))
-
 
 == Information for package authors.<4pck>
 
@@ -115,13 +115,10 @@ This makes sure the end user still can use the global database provided by #l wi
 Thanks to #link("https://github.com/sjfhsjfh")[sjfhsjfh] we have fluent support.
 
 #_quote(title: none)[
-
-Fluent is #quote(attribution: link("https://projectfluent.org/")[Project Fluent])[a localization system
-for natural-sounding translations. ]
+  Fluent is #quote(attribution: link("https://projectfluent.org/")[Project Fluent])[a localization system for natural-sounding translations.]
 ]
 
 Heres a simple example of how to use the `linguify` package to load translations from fluent files, which are kept in `L10n` directory and named with the language code, e.g. `en.ftl` and `zh.ftl`.
-
 
 #grid(
   columns: 2,
@@ -132,7 +129,8 @@ Heres a simple example of how to use the `linguify` package to load translations
     #import "@preview/linguify:0.4.0": *
     // Define the languages you have files for.
     #let languages = ("en", "zh")
-    #set_database(eval(load_ftl_data("./L10n", languages)))
+    #set_database(eval(
+      load_ftl_data("./L10n", languages)))
 
     // Use linguify like described above.
     = #linguify("title")
@@ -141,9 +139,11 @@ Heres a simple example of how to use the `linguify` package to load translations
     = #linguify("title")
 
     // Args are supported as well.
-    #linguify("hello", lang: "en", args: ("name": "Alice & Bob",))
+    #linguify("hello", lang: "en",
+      args: ("name": "Alice & Bob"))
     ```
-  ],[
+  ],
+  [
     Folder structure
     ```
     my-project
@@ -160,11 +160,10 @@ Heres a simple example of how to use the `linguify` package to load translations
     abstract = Abstract
     hello = Hello, {$name}!
     ```
-  ]
+  ],
 )
 
 You have to maintain the language list used in database initialization since Typst currently does not list files in a directory. Of course, you can use an external file to store the language list and load it in the script if it is necessary.
-
 
 #grid(
   columns: 2,
@@ -193,20 +192,17 @@ You have to maintain the language list used in database initialization since Typ
     #let data = toml("lang.toml")
 
     #for lang in data.ftl.languages {
-      let lang_section = read(data.ftl.path + "/" + lang + ".ftl")
+      let lang_section = read(
+        data.ftl.path + "/" + lang + ".ftl")
       data.lang.insert(lang, lang_section)
     }
 
     #set_database(data)
     #linguify("hello")
     ```
-    #sym.arrow prints #box(outset:(y: 4pt), inset:(x: 4pt), fill: orange.lighten(60%), radius: 3pt)[Hello, Lore!]
-  ]
+    #sym.arrow prints #box(outset: (y: 4pt), inset: (x: 4pt), fill: orange.lighten(60%), radius: 3pt)[Hello, Lore!]
+  ],
 )
-
-
-
-
 
 = Contributing
 

@@ -6,7 +6,7 @@
 
 #let data = toml("lang.toml")
 
-#let path = if-auto-then(data.ftl.at("path", default: auto), "./l10n")
+#let path = data.ftl.at("path", default: "./l10n")
 #for lang in data.ftl.languages {
   let lang_section = read(path + "/" + lang + ".ftl")
   data.lang.insert(lang, lang_section)
@@ -17,7 +17,7 @@
 
 = Greetings
 - #linguify("hello", from: data)
-- #linguify("hello", from: data, args:(name: "Pete"))
+- #linguify("hello", from: data, args: (name: "Pete"))
 
 
 = Headings
@@ -26,22 +26,29 @@
 #set heading(numbering: "1.a.")
 ```
 
-Your document has #context linguify("heading", from: data, args:(headingCount: counter(heading).get().first())).
-#block[
+#let headings = context linguify("heading", from: data, args: (headingCount: counter(heading).get().first()))
+
+Your document has #headings.
+
+#[
   #set text(lang: "de")
-  #de Dein Dokument hat #context linguify("heading", from: data, args:(headingCount: counter(heading).get().first())).
-]
-= Head
-Your document has #context linguify("heading", from: data, args:(headingCount: counter(heading).get().first())).
-#block[
-  #set text(lang: "de")
-  #de Dein Dokument hat #context linguify("heading", from: data, args:(headingCount: counter(heading).get().first())).
+  #de Dein Dokument hat #headings.
 ]
 
 = Head
 
-Your document has #context linguify("heading", from: data, args:(headingCount: counter(heading).get().first())).
-#block[
+Your document has #headings.
+
+#[
   #set text(lang: "de")
-  #de Dein Dokument hat #context linguify("heading", from: data, args:(headingCount: counter(heading).get().first())).
+  #de Dein Dokument hat #headings.
+]
+
+= Head
+
+Your document has #headings.
+
+#[
+  #set text(lang: "de")
+  #de Dein Dokument hat #headings.
 ]
