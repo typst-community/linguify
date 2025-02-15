@@ -54,8 +54,9 @@
 ) = {
   assert.eq(type(path), str, message: "expected path to be a string, found " + str(type(path)))
   assert.eq(type(languages), array, message: "expected languages to be an array, found " + str(type(languages)))
+  assert(languages.all(l => type(l) == str), message: "languages array can only contain string values")
 
-  ```Typst
+  let script = ```Typst
   let import_ftl(path, langs) = {
     let data = (
       conf: (
@@ -71,9 +72,13 @@
     }
     data
   }
-  import_ftl(
-    "```.text + path + ```",
-    (```.text + (languages.map(x => "\"" + str(x) + "\", ").sum()).trim(" ") + ```)
-  )
+  import_ftl(PATH, LANGS)
   ```.text
+
+  let scope = (
+    PATH: repr(path),
+    LANGS: repr(languages),
+  )
+
+  script.replace(regex("\b(" + scope.keys().join("|") + ")\b"), m => scope.at(m.text))
 }
