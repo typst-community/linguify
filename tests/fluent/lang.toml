@@ -1,6 +1,6 @@
 [conf]
 default-lang = "en"
-data_type = "ftl"
+data-type = "ftl"
 
 [ftl]
 languages = ["en", "de"]

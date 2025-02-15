@@ -1,19 +1,19 @@
 #let ftl = plugin("./linguify_fluent_rs.wasm")
 
 /// returns a bool
-#let has_message(ftl_str, msg_id) = {
-  str(ftl.has_id(bytes(ftl_str), bytes(msg_id))) == "true"
+#let has-message(ftl-str, msg-id) = {
+  str(ftl.has_id(bytes(ftl-str), bytes(msg-id))) == "true"
 }
 
 /// Returns the message from the ftl file
 ///
-#let get_message(
+#let get-message(
   /// the content of the ftl file
   /// -> string
-  ftl_str,
+  ftl-str,
   /// the identifier of the message
   /// -> string
-  msg_id,
+  msg-id,
   /// the arguments to pass to the message
   /// -> dictionary
   args: none,
@@ -24,13 +24,13 @@
   if args == none {
     args = (:)
   }
-  if not has_message(ftl_str, msg_id) {
+  if not has-message(ftl-str, msg-id) {
     return default
   }
   return str(
     ftl.get_message(
-      bytes(ftl_str),
-      bytes(msg_id),
+      bytes(ftl-str),
+      bytes(msg-id),
       bytes(json.encode(args, pretty: false)),
     ),
   )
@@ -42,9 +42,9 @@
 ///
 /// ## Example:
 /// ```typst
-/// eval(load_ftl_data("path/to/ftl", ("en", "fr")))
+/// eval(load-ftl-data("path/to/ftl", ("en", "fr")))
 /// ```
-#let load_ftl_data(
+#let load-ftl-data(
   /// the path to the directory containing the ftl files
   /// -> string
   path,
@@ -57,10 +57,10 @@
   assert(languages.all(l => type(l) == str), message: "languages array can only contain string values")
 
   let script = ```Typst
-  let import_ftl(path, langs) = {
+  let import-ftl(path, langs) = {
     let data = (
       conf: (
-        data_type: "ftl",
+        data-type: "ftl",
         ftl: (
           languages: langs
         ),
@@ -72,7 +72,7 @@
     }
     data
   }
-  import_ftl(PATH, LANGS)
+  import-ftl(PATH, LANGS)
   ```.text
 
   let scope = (
