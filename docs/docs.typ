@@ -14,7 +14,7 @@
   if it.attribution != none [ (#it.attribution)]
 }
 
-#let lang_data = read("lang.toml")
+#let lang-data = read("lang.toml")
 
 #set-database(toml("lang.toml"))
 
@@ -95,18 +95,18 @@ The content of the `lang.toml` file, used in the example above looks like this.
 
 == Information for package authors.<4pck>
 
-As the database is stored in a typst state, it can be overwritten. This leads to the following problem. If you use #l inside your package and use the `set_database()` function it will probably work like you expect. But if a user imports your package and uses #l for their own document as well, he will overwrite the your database by using `set_database`. Therefore it is recommend to use the `from` argument in the `linguify` function to specify your database directly.
+As the database is stored in a typst state, it can be overwritten. This leads to the following problem. If you use #l inside your package and use the `set-database()` function it will probably work like you expect. But if a user imports your package and uses #l for their own document as well, he will overwrite the your database by using `set-database`. Therefore it is recommend to use the `from` argument in the `linguify` function to specify your database directly.
 
 Example:
 ```typc
 // Load data
-#let lang_data = toml("lang.toml")
+#let lang-data = toml("lang.toml")
 
 // Useage
-#linguify("key", from: lang_data)
+#linguify("key", from: lang-data)
 ```
 
-This makes sure the end user still can use the global database provided by #l with `set_database()` and calling.
+This makes sure the end user still can use the global database provided by #l with `set-database()` and calling.
 
 #sym.arrow Have a look at the #link("https://github.com/jomaway/typst-gentle-clues", "gentle-clues") package for a real live example.
 
@@ -129,8 +129,8 @@ Heres a simple example of how to use the `linguify` package to load translations
     #import "@preview/linguify:0.4.0": *
     // Define the languages you have files for.
     #let languages = ("en", "zh")
-    #set_database(eval(
-      load_ftl_data("./L10n", languages)))
+    #set-database(eval(
+      load-ftl-data("./L10n", languages)))
 
     // Use linguify like described above.
     = #linguify("title")
@@ -192,12 +192,12 @@ You have to maintain the language list used in database initialization since Typ
     #let data = toml("lang.toml")
 
     #for lang in data.ftl.languages {
-      let lang_section = read(
+      let lang-section = read(
         data.ftl.path + "/" + lang + ".ftl")
-      data.lang.insert(lang, lang_section)
+      data.lang.insert(lang, lang-section)
     }
 
-    #set_database(data)
+    #set-database(data)
     #linguify("hello")
     ```
     #sym.arrow prints #box(outset: (y: 4pt), inset: (x: 4pt), fill: orange.lighten(60%), radius: 3pt)[Hello, Lore!]
@@ -206,7 +206,7 @@ You have to maintain the language list used in database initialization since Typ
 
 = Contributing
 
-If you would like to integrate a new i18n solution into #l, you can set the `conf.data_type` described in the #ref(<db>, supplement: "database section"). And then add implementation in the `get-text` function for your data type.
+If you would like to integrate a new i18n solution into #l, you can set the `conf.data-type` described in the #ref(<db>, supplement: "database section"). And then add implementation in the `get-text` function for your data type.
 
 #pagebreak()
 = Reference

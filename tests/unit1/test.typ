@@ -2,44 +2,44 @@
 
 #let db = toml("lang.toml")
 
-#let test_data = {
+#let test-data = {
   assert(db != none)
   assert(db.at("lang", default: none) != none )
 
   set-database(db)
   reset-database()
 
-  [run `test_db` successfully]
+  [run `data` successfully]
 }
 
-#let test_get_text = {
+#let test-get-text = {
   // English (en)
-  assert(get_text(db.lang, "apple", "en") == "Apple")
-  assert(get_text(db.lang, "pear", "en") == "Pear")
-  assert(get_text(db.lang, "banana", "en") == "Banana")
+  assert(get-text(db.lang, "apple", "en") == "Apple")
+  assert(get-text(db.lang, "pear", "en") == "Pear")
+  assert(get-text(db.lang, "banana", "en") == "Banana")
 
-  assert(get_text(db.lang, "red", "en") == "red")
-  assert(get_text(db.lang, "green", "en") == "green")
-  assert(get_text(db.lang, "yellow", "en") == "yellow")
+  assert(get-text(db.lang, "red", "en") == "red")
+  assert(get-text(db.lang, "green", "en") == "green")
+  assert(get-text(db.lang, "yellow", "en") == "yellow")
 
-  assert(get_text(db.lang, "test", "en") == none)
+  assert(get-text(db.lang, "test", "en") == none)
 
   // German (de)
-  assert(get_text(db.lang, "apple", "de") == "Apfel")
-  assert(get_text(db.lang, "pear", "de") == "Birne")
-  assert(get_text(db.lang, "banana", "de") == "Banane")
+  assert(get-text(db.lang, "apple", "de") == "Apfel")
+  assert(get-text(db.lang, "pear", "de") == "Birne")
+  assert(get-text(db.lang, "banana", "de") == "Banane")
 
-  assert(get_text(db.lang, "red", "de") == none)
-  assert(get_text(db.lang, "green", "de") == none)
-  assert(get_text(db.lang, "yellow", "de") == none)
+  assert(get-text(db.lang, "red", "de") == none)
+  assert(get-text(db.lang, "green", "de") == none)
+  assert(get-text(db.lang, "yellow", "de") == none)
 
-  assert(get_text(db.lang, "test", "de") == none)
+  assert(get-text(db.lang, "test", "de") == none)
 
-  [run `test_get_text` successfully]
+  [run `test-get-text` successfully]
 }
 
 
-#let test__linguify = {
+#let test-_linguify = {
   reset-database()
 
   // English (en)
@@ -85,11 +85,11 @@
     assert(is-error(_linguify("test", from: db)))
   }
 
-  [run `test__linguify` successfully]
+  [run `test-_linguify` successfully]
 }
 
 
-#let test__linguify_auto_db = {
+#let test-_linguify-auto-db = {
   set-database(db)
     // English (en)
   set text(lang: "en")
@@ -134,10 +134,10 @@
     assert(is-error(_linguify("test")))
   }
 
-  [run `test__linguify_auto_db` successfully]
+  [run `test-_linguify-auto-db` successfully]
 }
 
-#let test_args_in_dict_mode = {
+#let test-args-in-dict-mode = {
   context {
     assert(_linguify("apple") ==  ok("Apple"))
     assert(is-error(_linguify("apple", args: (name: "test"))))
@@ -147,19 +147,19 @@
     assert(is-error(_linguify("apple", args: 1)))
   }
 
-  [run `test_args_in_dict_mode` successfully]
+  [run `test-args-in-dict-mode` successfully]
 }
 
-#let test_linguify_default = {
+#let test-linguify-default = {
   assert.eq(linguify("test", from: db, lang: "en", default: "x"), "x")
 
-  [run `test_linguify_default` successfully]
+  [run `test-linguify-default` successfully]
 }
 
 = Run tests (#datetime.today().display())
 
-- #test_data
-- #test_get_text
-- #test__linguify
-- #test__linguify_auto_db
-- #test_args_in_dict_mode
+- #test-data
+- #test-get-text
+- #test-_linguify
+- #test-_linguify-auto-db
+- #test-args-in-dict-mode

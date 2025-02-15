@@ -5,7 +5,7 @@
 /// None or dictionary of the following structure:
 ///
 /// - `conf`
-///   - `data_type` (string): The type of data structure used for the database. If not specified, it
+///   - `data-type` (string): The type of data structure used for the database. If not specified, it
 ///     defaults to `dict` structure.
 ///   - `default-lang` (string): The default language to use as a fallback if the key in the
 ///     preferred language is not found.
@@ -43,7 +43,7 @@
 }
 
 /// Get a value from a L10n data dictionary. If the key does not exist, `none` is returned.
-#let get_text(
+#let get-text(
   /// The dictionary to get the value from.
   /// -> dictionary
   src,
@@ -59,12 +59,12 @@
   args: none,
 ) = {
   assert.eq(type(src), dictionary, message: "expected src to be a dictionary, found " + str(type(src)))
-  let lang_section = src.at(lang, default: none)
-  if lang_section != none {
+  let lang-section = src.at(lang, default: none)
+  if lang-section != none {
     if mode == "dict" {
-      lang_section.at(key, default: none)
+      lang-section.at(key, default: none)
     } else if mode == "ftl" {
-      fluent.get_message(lang_section, key, args: args, default: none)
+      fluent.get-message(lang-section, key, args: args, default: none)
     } else {
       none
     }
@@ -75,7 +75,7 @@
 }
 
 /// fetch a string in the required lang. Returns a result with ("ok": value) if value was found and
-/// ("error": error_message) if value was not found.
+/// ("error": error-message) if value was not found.
 ///
 /// -> dictionary
 
@@ -95,14 +95,14 @@
 
   // check if database is not empty. Means no data dictionary was specified.
   if database == none { return error("linguify database is empty.") }
-  let data_type = database.conf.at("data_type", default: "dict")
+  let data-type = database.conf.at("data-type", default: "dict")
 
   // get selected language.
-  let selected_lang = if-auto-then(lang, () => text.lang)
-  let lang_not_found = not selected_lang in database.lang
-  let fallback_lang = database.conf.at("default-lang", default: none)
+  let selected-lang = if-auto-then(lang, () => text.lang)
+  let lang-not-found = not selected-lang in database.lang
+  let fallback-lang = database.conf.at("default-lang", default: none)
 
-  let args = if data_type == "ftl" {
+  let args = if data-type == "ftl" {
     if-auto-then(args, {
       let args = database.at("ftl", default: (:)).at("args", default: (:))
       if type(args) != dictionary {
@@ -117,21 +117,21 @@
     (:)
   }
 
-  let value = get_text(database.lang, key, selected_lang, mode: data_type, args: args)
+  let value = get-text(database.lang, key, selected-lang, mode: data-type, args: args)
 
   if value != none {
     return ok(value)
   }
 
-  let error_message = if lang_not_found {
-    "Could not find language `" + selected_lang + "` in the linguify database."
+  let error-message = if lang-not-found {
+    "Could not find language `" + selected-lang + "` in the linguify database."
   } else {
-    "Could not find an entry for the key `" + key + "` in language `" + selected_lang + "` at the linguify database."
+    "Could not find an entry for the key `" + key + "` in language `" + selected-lang + "` at the linguify database."
   }
 
   // Check if a fallback language is set
-  if fallback_lang != none {
-    let value = get_text(database.lang, key, fallback_lang, mode: data_type, args: args)
+  if fallback-lang != none {
+    let value = get-text(database.lang, key, fallback-lang, mode: data-type, args: args)
 
     // Use the fallback language if possible
     if value != none {
@@ -140,14 +140,14 @@
 
     // if the key is not found in the fallback language
 
-    error_message = error_message + " Also, the fallback language `" + fallback_lang + "` does not contain the key `" + key + "`."
+    error-message = error-message + " Also, the fallback language `" + fallback-lang + "` does not contain the key `" + key + "`."
 
   } else {
     // if no fallback language is set
-    error_message = error_message + " Also, no fallback language is set."
+    error-message = error-message + " Also, no fallback language is set."
   }
 
-  return error(error_message)
+  return error(error-message)
 }
 
 

@@ -8,11 +8,11 @@
 
 #let path = data.ftl.at("path", default: "./l10n")
 #for lang in data.ftl.languages {
-  let lang_section = read(path + "/" + lang + ".ftl")
-  data.lang.insert(lang, lang_section)
+  let lang-section = read(path + "/" + lang + ".ftl")
+  data.lang.insert(lang, lang-section)
 }
 
-#let data2 = eval(load_ftl_data("./l10n", ("en", "de")))
+#let data2 = eval(load-ftl-data("./l10n", ("en", "de")))
 #assert.eq(data.lang, data2.lang)
 
 *Data: *
