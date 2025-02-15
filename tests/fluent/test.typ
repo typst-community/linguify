@@ -21,6 +21,7 @@
 = Greetings
 - #linguify("hello", from: data)
 - #linguify("hello", from: data, args: (name: "Pete"))
+- #linguify("test", from: data, default: "test")
 
 
 = Headings

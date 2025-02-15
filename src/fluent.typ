@@ -10,7 +10,7 @@
 #let get-message(
   /// the content of the ftl file
   /// -> string
-  ftl-str,
+  source,
   /// the identifier of the message
   /// -> string
   msg-id,
@@ -21,19 +21,16 @@
   /// -> string
   default: none,
 ) = {
-  if args == none {
-    args = (:)
-  }
-  if not has-message(ftl-str, msg-id) {
+  // Typst 0.13: `cbor.decode` is deprecated, directly pass bytes to `cbor` instead
+  let decode = if sys.version < version(0, 13, 0) { cbor.decode } else { cbor }
+
+  let config = cbor.encode((source: source, msg-id: msg-id, args: args))
+  let result = decode(ftl.get_message(config))
+  if result == none {
     return default
   }
-  return str(
-    ftl.get_message(
-      bytes(ftl-str),
-      bytes(msg-id),
-      bytes(json.encode(args, pretty: false)),
-    ),
-  )
+
+  result
 }
 
 /// Constructs the data dict needed in `linguify.typ`
