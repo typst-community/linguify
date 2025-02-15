@@ -1,5 +1,5 @@
 // #include "fluent-test/test.typ"
-#import "/src/linguify.typ": *
+#import "/src/lib.typ": *
 
 #let de = smallcaps("DE:")
 #let en = smallcaps("EN:")
@@ -11,6 +11,9 @@
   let lang_section = read(path + "/" + lang + ".ftl")
   data.lang.insert(lang, lang_section)
 }
+
+#let data2 = eval(load_ftl_data("./l10n", ("en", "de")))
+#assert.eq(data.lang, data2.lang)
 
 *Data: *
 #box(fill: luma(240), radius: 5pt, inset: 0.8em)[#data]
