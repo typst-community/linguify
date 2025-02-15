@@ -1,10 +1,12 @@
 // Helper function.
 // if the value is auto "ret" is returned else the value self is returned
 #let if-auto-then(val, ret) = {
-  if val == auto {
+  if val != auto {
+    val
+  } else if type(ret) != function {
     ret
   } else {
-    val
+    ret()
   }
 }
 
