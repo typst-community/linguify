@@ -12,7 +12,7 @@ You can use linguify global database.
 
 Example:
 ```typst
-#import "@preview/linguify:0.4.1": *
+#import "@preview/linguify:0.4.2": *
 
 #let lang-data = toml("lang.toml")
 #set-database(lang-data)
@@ -45,7 +45,7 @@ Recommend is to store the database in a separate file like `lang.toml` and load 
 
 Example:
 ```typ
-#import "@preview/linguify:0.4.1": *
+#import "@preview/linguify:21": *
 
 #let database = toml("lang.toml")
 
