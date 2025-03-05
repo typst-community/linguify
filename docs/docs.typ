@@ -3,12 +3,13 @@
 
 #let l = [_linguify_]
 
-#set heading(numbering: (..args) => none)  // needed for ref to work
-
 #show raw.where(block: false): it => {
   box(fill: luma(240), radius: 5pt, inset: (x: 3pt), outset: (y: 3pt), it)
 }
-#show link: set text(fill: blue)
+#show link: it => {
+  set text(fill: blue) if type(it.dest) == str
+  it
+}
 #show quote.where(block: false): it => {
   ["] + h(0pt, weak: true) + it.body + h(0pt, weak: true) + ["]
   if it.attribution != none [ (#it.attribution)]
@@ -35,14 +36,14 @@
 
 #v(1cm)
 
-This manual shows a short example for the usage of the `linguify` package inside your document. If you want to *include linguify into your package* make sure to read the #ref(<4pck>, supplement: "section for package authors").
+This manual shows a short example for the usage of the `linguify` package inside your document. If you want to *include linguify into your package* make sure to read the #link(<4pck>, "section for package authors").
 
 #pagebreak()
 = Usage
 
 == Basic Example
 
-*Load language data file:* #sym.arrow See #ref(<db>, supplement: "database section") for content of `lang.toml`
+*Load language data file:* #sym.arrow See #link(<db>, "database section") for content of `lang.toml`
 
 ```typc
 #set-database(toml("lang.toml"))
@@ -206,7 +207,7 @@ You have to maintain the language list used in database initialization since Typ
 
 = Contributing
 
-If you would like to integrate a new i18n solution into #l, you can set the `conf.data-type` described in the #ref(<db>, supplement: "database section"). And then add implementation in the `get-text` function for your data type.
+If you would like to integrate a new i18n solution into #l, you can set the `conf.data-type` described in the #link(<db>, "database section"). And then add implementation in the `get-text` function for your data type.
 
 #pagebreak()
 = Reference
