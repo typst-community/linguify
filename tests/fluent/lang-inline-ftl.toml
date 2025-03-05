@@ -1,0 +1,32 @@
+[conf]
+default-lang = "en"
+data-type = "ftl"
+
+[ftl]
+languages = ["en", "de"]
+path = "./l10n"
+
+[ftl.args]
+name = "Lore"
+
+[lang]
+en = '''
+title = A linguify example - with Fluent
+abstract = Abstract
+hello = Hello, {$name}!
+heading = {$headingCount ->
+    [one] {$headingCount} heading
+   *[other] {$headingCount} headings
+}
+'''
+
+de = '''
+title = Ein linguify Beispiel - mit Fluent
+abstract = Zusammenfassung
+hello = Hallo, {$name}!
+heading = {$headingCount ->
+    [0] keine Überschriften
+    [one] eine Überschrift
+   *[other] {$headingCount} Überschriften
+}
+'''

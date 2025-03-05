@@ -15,6 +15,9 @@
 #let data2 = eval(load-ftl-data("./l10n", ("en", "de")))
 #assert.eq(data.lang, data2.lang)
 
+#let data3 = toml("lang-inline-ftl.toml")
+#assert.eq(data, data3)
+
 *Data: *
 #box(fill: luma(240), radius: 5pt, inset: 0.8em)[#data]
 
