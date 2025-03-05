@@ -1,12 +1,7 @@
 #let ftl = plugin("./linguify_fluent_rs.wasm")
 
-/// returns a bool
-#let has-message(ftl-str, msg-id) = {
-  str(ftl.has_id(bytes(ftl-str), bytes(msg-id))) == "true"
-}
-
 /// Returns the message from the ftl file
-///
+/// -> string
 #let get-message(
   /// the content of the ftl file
   /// -> string
@@ -37,10 +32,11 @@
 ///
 /// Returns a `str`, use `eval` to convert it to a dict
 ///
-/// ## Example:
+/// Example:
 /// ```typst
 /// eval(load-ftl-data("path/to/ftl", ("en", "fr")))
 /// ```
+/// -> string
 #let load-ftl-data(
   /// the path to the directory containing the ftl files
   /// -> string

@@ -21,6 +21,8 @@
 
 #let pkginfo = toml("/typst.toml").package
 
+#let ref-fn(name) = link(label("-" + name), raw(name))
+
 // title
 #align(center, text(24pt, weight: 500)[linguify manual])
 
@@ -36,7 +38,7 @@
 
 #v(1cm)
 
-This manual shows a short example for the usage of the `linguify` package inside your document. If you want to *include linguify into your package* make sure to read the #link(<4pck>, "section for package authors").
+This manual shows a short example for the usage of the #l package inside your document. If you want to *include linguify into your package* make sure to read the #link(<4pck>, "section for package authors").
 
 #pagebreak()
 = Usage
@@ -96,7 +98,7 @@ The content of the `lang.toml` file, used in the example above looks like this.
 
 == Information for package authors.<4pck>
 
-As the database is stored in a typst state, it can be overwritten. This leads to the following problem. If you use #l inside your package and use the `set-database()` function it will probably work like you expect. But if a user imports your package and uses #l for their own document as well, he will overwrite the your database by using `set-database`. Therefore it is recommend to use the `from` argument in the `linguify` function to specify your database directly.
+As the database is stored in a typst state, it can be overwritten. This leads to the following problem. If you use #l inside your package and use the #ref-fn("set-database()") function it will probably work like you expect. But if a user imports your package and uses #l for their own document as well, he will overwrite the your database by using #ref-fn("set-database()"). Therefore it is recommend to use the `from` argument in the #ref-fn("linguify()") function to specify your database directly.
 
 Example:
 ```typc
@@ -107,64 +109,61 @@ Example:
 #linguify("key", from: lang-data)
 ```
 
-This makes sure the end user still can use the global database provided by #l with `set-database()` and calling.
+This makes sure the end user still can use the global database provided by #l with #ref-fn("set-database()") and calling.
 
 #sym.arrow Have a look at the #link("https://github.com/jomaway/typst-gentle-clues", "gentle-clues") package for a real live example.
 
 
 == Fluent support
-Thanks to #link("https://github.com/sjfhsjfh")[sjfhsjfh] we have fluent support.
 
-#_quote(title: none)[
-  Fluent is #quote(attribution: link("https://projectfluent.org/")[Project Fluent])[a localization system for natural-sounding translations.]
-]
+Thanks to #link("https://github.com/sjfhsjfh")[sjfhsjfh], #l also has Fluent#footnote(link("https://projectfluent.org/")[Project Fluent]) support. Fluent allows for more complex localization, such as accounting for separate plural or other counting forms. To use Fluent, the `conf.data-type` key of your database needs to be set to `"ftl"`. In addition, each language contains a Fluent language definition instead of many keys for all the terms. A complete example of a Fluent database could look like this:
 
-Heres a simple example of how to use the `linguify` package to load translations from fluent files, which are kept in `L10n` directory and named with the language code, e.g. `en.ftl` and `zh.ftl`.
+```toml
+[conf]
+default-lang = "en"
+# set database type to Fluent
+data-type = "ftl"
 
-#grid(
-  columns: 2,
-  column-gutter: 1em,
-  [
-    ```typc
-    // my-document.typ
-    #import "@preview/linguify:0.4.0": *
-    // Define the languages you have files for.
-    #let languages = ("en", "zh")
-    #set-database(eval(
-      load-ftl-data("./L10n", languages)))
+# add arguments available to Fluent translations by default
+[ftl.args]
+name = "Lore"
 
-    // Use linguify like described above.
-    = #linguify("title")
+[lang]
+# each language is a single key containing a whole Fluent file
+en = '''
+title = A linguify example - with Fluent
+abstract = Abstract
+hello = Hello, {$name}!
+heading = {$headingCount ->
+    [one] {$headingCount} heading
+   *[other] {$headingCount} headings
+}
+'''
 
-    #set text(lang: "zh")
-    = #linguify("title")
+de = '''
+title = Ein linguify Beispiel - mit Fluent
+abstract = Zusammenfassung
+hello = Hallo, {$name}!
+heading = {$headingCount ->
+    [0] keine Überschriften
+    [one] eine Überschrift
+   *[other] {$headingCount} Überschriften
+}
+'''
+```
 
-    // Args are supported as well.
-    #linguify("hello", lang: "en",
-      args: ("name": "Alice & Bob"))
-    ```
-  ],
-  [
-    Folder structure
-    ```
-    my-project
-    ├── L10n
-    │   ├── en.ftl
-    │   └── zh.ftl
-    │
-    └── my-document.typ
-    ```
+Since embedding one file inside another is not optimal for things like IDE support, #l also has #ref-fn("load-ftl-data()") to load languages from separate files. Heres a simple example of how to load translations from Fluent files, which are kept in `l10n` directory and named with the language code, e.g. `en.ftl` and `de.ftl`.
 
-    Example for `en.ftl`
-    ```ftl
-    title = A linguify example - with Fluent
-    abstract = Abstract
-    hello = Hello, {$name}!
-    ```
-  ],
-)
+```typc
+// my-document.typ
+#import "@preview/linguify:0.4.2": *
+// Define the languages you have files for.
+#set-database(eval(load-ftl-data("./l10n", ("en", "de"))))
+```
 
-You have to maintain the language list used in database initialization since Typst currently does not list files in a directory. Of course, you can use an external file to store the language list and load it in the script if it is necessary.
+Note how there is a call to `eval()`, since the #l package can't read your translation files directly; instead #l only generates the code that does the reading and lets you execute it.
+
+Likewise, you have to maintain the language list used in database initialization since Typst currently does not list files in a directory. Of course, you can use an external file to store the list of language files and use that to load the ftl files. One option is to use the TOML database file for this:
 
 #grid(
   columns: 2,
@@ -178,43 +177,51 @@ You have to maintain the language list used in database initialization since Typ
 
     [ftl]
     languages = ["en", "de"]
-    path = "./L10n"
-
-    [ftl.args]
-    name = "Lore"
+    path = "./l10n"
 
     [lang]
+    # this is empty, it will be populated
+    # by the code on the right
     ```
   ],
   [
     Load config inside your document.
 
-    ```typc
+    ```typ
     #let data = toml("lang.toml")
 
+    // insert ftl files into database
     #for lang in data.ftl.languages {
-      let lang-section = read(
-        data.ftl.path + "/" + lang + ".ftl")
-      data.lang.insert(lang, lang-section)
+      data.lang.insert(
+        lang,
+        read(data.ftl.path + "/" + lang + ".ftl"),
+      )
     }
 
     #set-database(data)
-    #linguify("hello")
     ```
-    #sym.arrow prints #box(outset: (y: 4pt), inset: (x: 4pt), fill: orange.lighten(60%), radius: 3pt)[Hello, Lore!]
   ],
 )
 
+The code above is roughly equivalent to what the #ref-fn("load-ftl-data()") function does, except it lets you store the list of languages in the data file.
+
 = Contributing
 
-If you would like to integrate a new i18n solution into #l, you can set the `conf.data-type` described in the #link(<db>, "database section"). And then add implementation in the `get-text` function for your data type.
+If you would like to integrate a new i18n solution into #l, you can set the `conf.data-type` described in the #link(<db>, "database section"). And then add implementation in the #ref-fn("get-text()") function for your data type.
 
 #pagebreak()
 = Reference
 
 #import "@preview/tidy:0.4.1"
 #tidy.show-module(
-  tidy.parse-module(read("/src/linguify.typ"), name: "Linguify reference"),
+  tidy.parse-module(read("/src/linguify.typ")),
+  style: tidy.styles.default,
+  show-outline: false,
+  sort-functions: none,
+)
+
+#tidy.show-module(
+  tidy.parse-module(read("/src/fluent.typ")),
   style: tidy.styles.default,
   show-outline: false,
   sort-functions: none,
