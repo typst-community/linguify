@@ -1,5 +1,7 @@
 #import "/src/lib.typ": *
 
+#show outline.entry: it => database-at(it.element.location(), it)
+
 // Initial database for cover page
 #let database = toml(bytes(```toml
 [conf]
