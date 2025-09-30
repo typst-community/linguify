@@ -2,6 +2,7 @@
 #import "@preview/gentle-clues:0.7.1": abstract, quote as _quote
 
 #let l = [_linguify_]
+#let L = [_Linguify_]
 
 #show raw.where(block: false): it => {
   box(fill: luma(240), radius: 5pt, inset: (x: 3pt), outset: (y: 3pt), it)
@@ -95,6 +96,18 @@ Test: #linguify("test")
 === Database<db>
 The content of the `lang.toml` file, used in the example above looks like this.
 #raw(lang: "toml", read("lang.toml"))
+
+== Handling outlines
+
+#L looks up translations in the _currently active_ database. This is a problem with outlines, because outline entries are rendered at a different location than the elements they refer to (headings, figures). In this case, an unexpected database may be used.
+
+If you use multiple databases for different parts of your document, and also use translations for your heading or figure captions, you can add the following show rule to ensure correct database lookup:
+
+```typ
+#show outline.entry: it => database-at(it.element.location(), it)
+```
+
+See the #ref-fn("database-at()") function for more details.
 
 == Information for package authors.<4pck>
 

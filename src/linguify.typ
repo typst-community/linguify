@@ -15,6 +15,45 @@
 ///   - ...
 #let database = state("linguify-database", none)
 
+/// A stack (array) of `location`s to use instead of `here()` when looking up the current database.
+/// This is used internally to support looking up translations in e.g. outlines relative to a
+/// heading's or figure's location, instead of the outline's.
+///
+/// When the stack is empty, the current location is used.
+#let location-stack = state("linguify-location-stack", ())
+
+/// Temporarily overrides the location at which the translation database is looked up.
+/// This is typically used to change the lookup inside outlines. Consider this:
+///
+/// ```typ
+/// #set-database(toml("a.toml"))
+/// #outline()
+/// = linguify("foo")
+///
+/// #set-database(toml("b.toml"))
+/// = linguify("bar")
+/// ```
+///
+/// In this example, the `foo` translation should be loaded from `a.toml` and `bar` from `b.toml`.
+/// However, the outline is covered by `a.toml` -- including the entry for the `bar` heading!
+///
+/// Adding the following show rule at the beginning fixes this:
+///
+/// ```typ
+/// #show outline.entry: it => database-at(it.element.location(), it)
+/// ```
+///
+/// This will make linguify look up the translations for each outline entry at the location the
+/// referenced element (heading) is located.
+#let database-at(
+  loc,
+  body,
+) = {
+  location-stack.update(it => (..it, loc))
+  body
+  location-stack.update(((..it, _)) => it)
+}
+
 /// Set the default linguify database
 ///
 /// The data must contain at least a lang section like described at @@database.
@@ -91,7 +130,10 @@
   lang: auto,
   args: auto,
 ) = {
-  let database = if-auto-then(from, () => database.get())
+  let database = if-auto-then(from, () => {
+    let location = location-stack.get().at(-1, default: here())
+    database.at(location)
+  })
 
   // check if database is not empty. Means no data dictionary was specified.
   if database == none { return error("linguify database is empty.") }
