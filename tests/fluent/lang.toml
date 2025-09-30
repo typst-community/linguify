@@ -8,5 +8,3 @@ path = "./l10n"
 
 [ftl.args]
 name = "Lore"
-
-[lang]

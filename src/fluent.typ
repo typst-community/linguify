@@ -49,7 +49,7 @@
   assert.eq(type(languages), array, message: "expected languages to be an array, found " + str(type(languages)))
   assert(languages.all(l => type(l) == str), message: "languages array can only contain string values")
 
-  let script = ```Typst
+  let script = ```typc
   let import-ftl(path, langs) = {
     let data = (
       conf: (
@@ -58,11 +58,10 @@
           languages: langs
         ),
       ),
-      lang: (:)
+      lang: langs.map(lang => {
+        (lang, read(path + "/" + lang + ".ftl"))
+      }).to-dict()
     )
-    for lang in langs {
-      data.lang.insert(lang, str(read(path + "/" + lang + ".ftl")))
-    }
     data
   }
   import-ftl(PATH, LANGS)

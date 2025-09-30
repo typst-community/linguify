@@ -7,10 +7,9 @@
 #let data = toml("lang.toml")
 
 #let path = data.ftl.at("path", default: "./l10n")
-#for lang in data.ftl.languages {
-  let lang-section = read(path + "/" + lang + ".ftl")
-  data.lang.insert(lang, lang-section)
-}
+#(data.lang = data.ftl.languages.map(lang => {
+  (lang, read(path + "/" + lang + ".ftl"))
+}).to-dict())
 
 #let data2 = eval(load-ftl-data("./l10n", ("en", "de")))
 #assert.eq(data.lang, data2.lang)

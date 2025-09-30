@@ -179,8 +179,7 @@ Likewise, you have to maintain the language list used in database initialization
     languages = ["en", "de"]
     path = "./l10n"
 
-    [lang]
-    # this is empty, it will be populated
+    # no `[lang]`, it will be populated
     # by the code on the right
     ```
   ],
@@ -191,19 +190,16 @@ Likewise, you have to maintain the language list used in database initialization
     #let data = toml("lang.toml")
 
     // insert ftl files into database
-    #for lang in data.ftl.languages {
-      data.lang.insert(
-        lang,
-        read(data.ftl.path + "/" + lang + ".ftl"),
-      )
-    }
+    #(data.lang = data.ftl.languages.map(lang => {
+      (lang, read(path + "/" + lang + ".ftl"))
+    }).to-dict())
 
     #set-database(data)
     ```
   ],
 )
 
-The code above is roughly equivalent to what the #ref-fn("load-ftl-data()") function does, except it lets you store the list of languages in the data file.
+The code above is roughly equivalent to what the #ref-fn("load-ftl-data()") function does, except it lets you store the list of languages in the data file and sets the `default-lang`.
 
 = Contributing
 
