@@ -2,8 +2,6 @@
 
 Basic functionalities.
 
-Code in `wasm-macro` is partly from [here](https://github.com/astrale-sharp/wasm-minimal-protocol)
-
 ## Usage
 
 generate the wasm file by running
