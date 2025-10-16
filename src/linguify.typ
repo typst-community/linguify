@@ -182,8 +182,9 @@
 
     // if the key is not found in the fallback language
 
-    error-message = error-message + " Also, the fallback language `" + fallback-lang + "` does not contain the key `" + key + "`."
-
+    error-message = (
+      error-message + " Also, the fallback language `" + fallback-lang + "` does not contain the key `" + key + "`."
+    )
   } else {
     // if no fallback language is set
     error-message = error-message + " Also, no fallback language is set."
@@ -193,11 +194,13 @@
 }
 
 
+
+
 /// fetch a string in the required language.
-/// provides context for `_linguify` function which implements the logic part.
+/// must have a context beforehand to access the global database/lang
 ///
 /// -> content
-#let linguify(
+#let linguify-raw(
   /// The key at which to retrieve the item.
   /// -> string
   key,
@@ -212,19 +215,26 @@
   default: auto,
   args: auto,
 ) = {
-  let impl() = {
-    let result = _linguify(key, from: from, lang: lang, args: args)
-    if is-ok(result) {
-      result.ok
-    } else {
-      if-auto-then(default, () => panic(result.error))
-    }
-  }
-
-  if from == auto or lang == auto {
-    // context is needed to use the default database or current language
-    context impl()
+  let result = _linguify(key, from: from, lang: lang, args: args)
+  if is-ok(result) {
+    result.ok
   } else {
-    impl()
+    if-auto-then(default, () => panic(result.error))
   }
+}
+
+/// fetch a string in the required language.
+/// provides context for `linguify-raw` function.
+///
+/// -> content
+#let linguify(
+  /// The key at which to retrieve the item.
+  /// -> string
+  key,
+  /// A default value to return if the key is not part of the database.
+  /// -> any
+  default: auto,
+  args: auto,
+) = {
+  context linguify-raw(key, default: default, args: args)
 }

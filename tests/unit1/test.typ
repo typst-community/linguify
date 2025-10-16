@@ -4,7 +4,7 @@
 
 #let test-data = {
   assert(db != none)
-  assert(db.at("lang", default: none) != none )
+  assert(db.at("lang", default: none) != none)
 
   set-database(db)
   reset-database()
@@ -46,15 +46,15 @@
   set text(lang: "en")
   context {
     assert(_linguify("apple", from: db) == ok("Apple"))
-    assert(_linguify("pear", from: db)== ok("Pear"))
-    assert(_linguify("banana", from: db) == ok("Banana" ))
+    assert(_linguify("pear", from: db) == ok("Pear"))
+    assert(_linguify("banana", from: db) == ok("Banana"))
 
     assert(_linguify("red", from: db) == ok("red"))
     assert(_linguify("green", from: db) == ok("green"))
     assert(_linguify("yellow", from: db) == ok("yellow"))
 
     assert(is-error(_linguify("test", from: db)))
-   }
+  }
 
   // German (de)
   set text(lang: "de")
@@ -91,11 +91,11 @@
 
 #let test-_linguify-auto-db = {
   set-database(db)
-    // English (en)
+  // English (en)
   set text(lang: "en")
   context {
     assert(_linguify("apple") == ok("Apple"))
-    assert(_linguify("pear")== ok("Pear"))
+    assert(_linguify("pear") == ok("Pear"))
     assert(_linguify("banana") == ok("Banana"))
 
     assert(_linguify("red") == ok("red"))
@@ -103,14 +103,14 @@
     assert(_linguify("yellow") == ok("yellow"))
 
     assert(is-error(_linguify("test")))
-   }
+  }
 
   // German (de)
   set text(lang: "de")
   context {
     assert(_linguify("apple") == ok("Apfel"))
     assert(_linguify("pear") == ok("Birne"))
-    assert(_linguify("banana") == ok("Banane") )
+    assert(_linguify("banana") == ok("Banane"))
 
     // keys not inside db - will fallback to en
     assert(_linguify("red") == ok("red"))
@@ -125,7 +125,7 @@
   context {
     assert(_linguify("apple") == ok("Apple"))
     assert(_linguify("pear") == ok("Pear"))
-    assert(_linguify("banana") == ok("Banana") )
+    assert(_linguify("banana") == ok("Banana"))
 
     assert(_linguify("red") == ok("red"))
     assert(_linguify("green") == ok("green"))
@@ -139,7 +139,7 @@
 
 #let test-args-in-dict-mode = {
   context {
-    assert(_linguify("apple") ==  ok("Apple"))
+    assert(_linguify("apple") == ok("Apple"))
     assert(is-error(_linguify("apple", args: (name: "test"))))
     assert(is-error(_linguify("apple", args: none)))
     assert(is-error(_linguify("apple", args: (:))))
@@ -151,7 +151,7 @@
 }
 
 #let test-linguify-default = {
-  assert.eq(linguify("test", from: db, lang: "en", default: "x"), "x")
+  assert.eq(linguify-raw("test", from: db, lang: "en", default: "x"), "x")
 
   [run `test-linguify-default` successfully]
 }

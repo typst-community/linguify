@@ -5,13 +5,10 @@
 #set-database(data)
 
 // Database and language are known: string
-#assert.eq(type(linguify("apple", from: data, lang: "en")), str)
+#assert.eq(type(linguify-raw("apple", from: data, lang: "en")), str)
 
 // Only database known: content (context)
-#assert.eq(type(linguify("apple", from: data)), content)
+#assert.eq(type(context linguify-raw("apple", from: data)), content)
 
 // Only language known: content (context)
-#assert.eq(type(linguify("apple", lang: "en")), content)
-
-// Neither known: content (context)
-#assert.eq(type(linguify("apple")), content)
+#assert.eq(type(context linguify-raw("apple", lang: "en")), content)
