@@ -182,19 +182,14 @@
 
     // if the key is not found in the fallback language
 
-    error-message = (
-      error-message + " Also, the fallback language `" + fallback-lang + "` does not contain the key `" + key + "`."
-    )
+    error-message += " Also, the fallback language `" + fallback-lang + "` does not contain the key `" + key + "`."
   } else {
     // if no fallback language is set
-    error-message = error-message + " Also, no fallback language is set."
+    error-message += " Also, no fallback language is set."
   }
 
   return error(error-message)
 }
-
-
-
 
 /// fetch a string in the required language.
 /// must have a context beforehand to access the global database/lang
