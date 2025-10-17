@@ -109,11 +109,25 @@ If you use multiple databases for different parts of your document, and also use
 
 See the #ref-fn("database-at()") function for more details.
 
+Alternatively, you can use #ref-fn("linguify-raw()") to manually provide context to #l. By doing so, you can control that #l is using the context from outside the heading, which means the same context in the heading and the outline:
+
+```typ
+// wrong: `linguify` provides its own context inside the heading
+// (unless you use `database-at` as shown above)
+= #linguify("...")
+
+// correct: use externally provided context that refers to outside the heading
+#context [= #linguify-raw("...")]
+```
+
+This will make _all_ context match between heading and outline (e.g. also the current language), whereas using #ref-fn("database-at()") only affects the database being used.
+
 == Information for package authors.<4pck>
 
 As the database is stored in a typst state, it can be overwritten. This leads to the following problem. If you use #l inside your package and use the #ref-fn("set-database()") function it will probably work like you expect. But if a user imports your package and uses #l for their own document as well, he will overwrite the your database by using #ref-fn("set-database()"). Therefore it is recommend to use the `from` argument in the #ref-fn("linguify()") function to specify your database directly.
 
-Example:
+#block(sticky: true)[Example:]
+
 ```typc
 // Load data
 #let lang-data = toml("lang.toml")
