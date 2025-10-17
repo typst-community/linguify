@@ -226,10 +226,16 @@
   /// The key at which to retrieve the item.
   /// -> string
   key,
+  /// database to fetch the item from. If auto linguify's global database will used.
+  /// -> dictionary
+  from: auto,
+  /// the language to look for, if auto use `context text.lang` (default)
+  /// -> string
+  lang: auto,
   /// A default value to return if the key is not part of the database.
   /// -> any
   default: auto,
   args: auto,
 ) = {
-  context linguify-raw(key, default: default, args: args)
+  context linguify-raw(key, from: from, lang: lang, default: default, args: args)
 }

@@ -1,4 +1,5 @@
 // #include "fluent-test/test.typ"
+
 #import "/src/lib.typ": *
 
 #let de = smallcaps("DE:")
@@ -19,9 +20,9 @@
 #box(fill: luma(240), radius: 5pt, inset: 0.8em)[#data]
 
 = Greetings
-- #context linguify-raw("hello", from: data)
-- #context linguify-raw("hello", from: data, args: (name: "Pete"))
-- #context linguify-raw("test", from: data, default: "test")
+- #linguify("hello", from: data)
+- #linguify("hello", from: data, args: (name: "Pete"))
+- #linguify("test", from: data, default: "test")
 
 
 = Headings
@@ -30,7 +31,7 @@
 #set heading(numbering: "1.a.")
 ```
 
-#let headings = context linguify-raw("heading", from: data, args: (headingCount: counter(heading).get().first()))
+#let headings = context linguify("heading", from: data, args: (headingCount: counter(heading).get().first()))
 
 Your document has #headings.
 
