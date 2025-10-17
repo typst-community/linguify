@@ -17,6 +17,6 @@
 
 #assert-panic(() => linguify-raw("apple"))
 
-#assert-panic(() => linguify-raw("apple", from: data)))
+#assert-panic(() => linguify-raw("apple", from: data))
 
-#assert-panic(() => linguify-raw("apple", lang: "en")))
+#assert-panic(() => linguify-raw("apple", lang: "en"))
