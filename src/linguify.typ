@@ -182,19 +182,44 @@
 
     // if the key is not found in the fallback language
 
-    error-message = error-message + " Also, the fallback language `" + fallback-lang + "` does not contain the key `" + key + "`."
-
+    error-message += " Also, the fallback language `" + fallback-lang + "` does not contain the key `" + key + "`."
   } else {
     // if no fallback language is set
-    error-message = error-message + " Also, no fallback language is set."
+    error-message += " Also, no fallback language is set."
   }
 
   return error(error-message)
 }
 
+/// fetch a string in the required language.
+/// must have a context beforehand to access the global database/lang
+///
+/// -> content
+#let linguify-raw(
+  /// The key at which to retrieve the item.
+  /// -> string
+  key,
+  /// database to fetch the item from. If auto linguify's global database will used.
+  /// -> dictionary
+  from: auto,
+  /// the language to look for, if auto use `context text.lang` (default)
+  /// -> string
+  lang: auto,
+  /// A default value to return if the key is not part of the database.
+  /// -> any
+  default: auto,
+  args: auto,
+) = {
+  let result = _linguify(key, from: from, lang: lang, args: args)
+  if is-ok(result) {
+    result.ok
+  } else {
+    if-auto-then(default, () => panic(result.error))
+  }
+}
 
 /// fetch a string in the required language.
-/// provides context for `_linguify` function which implements the logic part.
+/// provides context for `linguify-raw` function.
 ///
 /// -> content
 #let linguify(
@@ -212,19 +237,5 @@
   default: auto,
   args: auto,
 ) = {
-  let impl() = {
-    let result = _linguify(key, from: from, lang: lang, args: args)
-    if is-ok(result) {
-      result.ok
-    } else {
-      if-auto-then(default, () => panic(result.error))
-    }
-  }
-
-  if from == auto or lang == auto {
-    // context is needed to use the default database or current language
-    context impl()
-  } else {
-    impl()
-  }
+  context linguify-raw(key, from: from, lang: lang, default: default, args: args)
 }
