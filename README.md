@@ -12,7 +12,7 @@ You can use linguify global database.
 
 Example:
 ```typst
-#import "@preview/linguify:0.4.2": *
+#import "@preview/linguify:0.5.0": *
 
 #let lang-data = toml("lang.toml")
 #set-database(lang-data)
