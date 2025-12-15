@@ -183,7 +183,7 @@ Since embedding one file inside another is not optimal for things like IDE suppo
 
 ```typc
 // my-document.typ
-#import "@preview/linguify:0.4.2": *
+#import "@preview/linguify:0.5.0": *
 // Define the languages you have files for.
 #set-database(eval(load-ftl-data("./l10n", ("en", "de"))))
 ```
