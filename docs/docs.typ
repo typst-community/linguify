@@ -1,5 +1,5 @@
 #import "/src/lib.typ": *
-#import "@preview/gentle-clues:0.7.1": abstract, quote as _quote
+#import "@preview/gentle-clues:1.2.0": abstract
 
 #let l = [_linguify_]
 #let L = [_Linguify_]
